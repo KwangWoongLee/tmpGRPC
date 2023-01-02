@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+message Empty {}
+
+message ServerInfo {
+  string    host = 1;
+  int32     port = 2;
+  string    region = 3;
+  RoomList  roomList = 4;
+}
+
+message ServerInfoList 
+{
+  repeated ServerInfo servers = 1;
+}
+
+message User
+{
+    string aidx = 1;
+    string name = 2;
+    string          region = 3;
+    int32           isHost = 4;
+}
+
+message Room
+{
+  string  key = 1;
+  string  name = 2;
+  int32   memberCount = 3;
+  int32   minMemberCount = 4;
+  int32   maxMemberCount = 5;
+  int32   mapId = 6;
+}
+
+message CreatedRoomInfo
+{
+    User       user = 1;
+    string     name = 2;
+    int32      mapId = 3;
+    int32      minMemberCount = 4;
+    int32      maxMemberCount = 5;
+}
+
+message EnteredRoomInfo
+{
+    User user = 1;
+    string key = 2; 
+}
+
+message DetailedRoom {
+    
+}
+
+message RoomList 
+{
+  repeated Room         room = 1;
+}
+
+
+service MatchService {
+    // node 2 match(game)
+    rpc GetRoomList (User) returns (RoomList) {}; // region 확인 후, 해당 리젼 룸 리스트 제공
+    rpc CreateRoom (CreatedRoomInfo) returns (Room) {}; // go tcp
+    rpc EnterRoom (EnteredRoomInfo) returns (Empty) {};
+    rpc LeaveRoom (User) returns (Empty) {};
+
+    rpc StartGame (User) returns (Empty) {}; // 방장만 가능
+
+    // match 2 node(chat)
+    rpc EnterUser (EnteredRoomInfo) returns (Empty) {}; // 같은방에서의 채팅만 허용
+    rpc LeaveUser (User) returns (Empty) {};
+
+    // match 2 tcp
+    rpc CreateRoomTCP (CreatedRoomInfo) returns (Room) {}; // User의 region 확인해서 가능한 서버에서 룸 생성
+
+    // tcp 2 match
+    rpc AddServer (ServerInfo) returns (Empty) {};
+}

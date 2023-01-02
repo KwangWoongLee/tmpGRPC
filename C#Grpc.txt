@@ -1,0 +1,5 @@
+C#
+
+C:\Users\lgu48\.nuget\packages\grpc.tools\2.51.0\tools\windows_x64\protoc.exe --proto_path=protos --grpc_out=proto --csharp_out=protos --csharp_opt=file_extension=.g.cs protos/match.proto --plugin=protoc-gen-grpc=C:\Users\lgu48\.nuget\packages\grpc.tools\2.51.0\tools\windows_x64\grpc_csharp_plugin.exe
+
+https://www.linkedin.com/pulse/creating-your-first-grpc-net-core-client-server-app-koyikkamannil
